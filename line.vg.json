@@ -1,0 +1,13 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600, 
+    "height": 600,
+    "title": "Fatalities vs. Wounded",
+    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset.csv"},
+    "transform": [{"filter": "datum.Fatalities >= 50"}, {"filter": "datum.Wounded >=50"}],
+    "mark": "line",
+    "encoding": {
+        "x": {"field": "Year", "type": "temporal"},
+        "y": {"aggregate": "count", "title": "Number of Attacks"}
+    }
+}

@@ -1,0 +1,74 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600, 
+    "height": 600,
+    "title": "Fatalities vs. Wounded",
+    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset.csv"},
+    "params":[{
+        "name": "Attack_selection",
+        "bind":{
+            "input": "select",
+            "options": [null, "Assassination", "Hostage Taking (Kidnapping)", "Bombing/Explosion", "Armed Assault", "Unknown"],
+            "labels": ["Show All", "Assassination", "Hostage Taking", "Bombing", "Armed Assault","Unknown"],
+            "name": "Attack Selection"
+        }
+    }],
+    "transform": [{"filter": "datum.Fatalities >= 50"}, {"filter": "datum.Wounded >=50"}, {"filter": "Attack_selection == null || datum.Attack_Type == Attack_selection"}],
+    "encoding": {
+        "x": {
+            "field": "Wounded", 
+            "type": "quantitative",
+            "axis": {"tickCount": 3},
+            "scale": {"type": "log", "domain": [50,10000]}
+        },
+        "y": {
+            "field": "Fatalities", 
+            "type": "quantitative",
+            "axis": {"tickCount": 2},
+            "scale": {"type": "log", "domain": [50,1000]}
+        }
+    },
+    "layer": [
+        {
+        "mark": "circle",
+    "encoding": {
+        "color": {
+            "field": "Weapon_Type",
+            "type": "nominal",
+            "scale": {
+                "domain": ["Explosives", "Firearms", "Incendiary", "Chemical", "Melee", "Sabotage Equipment", "Unknown"]
+            }
+        },
+        "opacity": {
+            "value": 0.75
+        },
+        "tooltip": [
+            {"field": "Country", "type": "nominal"},
+            {"field": "Year", "type": "quantitative"},
+            {"field": "Fatalities", "type": "quantitative", "format": ","},
+            {"field": "Wounded", "type": "quantitative", "format": ","}
+            ]
+        }
+    },
+    {
+        "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "middle",
+            "dx": -12,
+            "fontSize": 11.5,
+            "fontStyle": "italic"
+        },
+        "encoding": {
+            "text": {"field": "Fatalities", "type": "quantitative"},
+            "color": {"value": "black"},
+            "opacity": {
+                "condition": {
+                    "test": "(datum['Fatalities'] > 520 || datum['Wounded'] > 3000) &&  datum['Wounded'] < 4500",
+                    "value": 1
+                },
+                "value": 0
+            }
+        }
+    }]
+}
