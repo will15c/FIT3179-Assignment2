@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FIT3179 Data Visualisation 2 - William Carpenter</title>
+        <!-- Importing Vega and Vega-Lite -->
+        <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+        <!-- pure.css for layout -->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+        <!-- CSS File -->
+        <link rel="stylesheet" type="text/css" href="css/vis_style.css" media="all">
+        <!-- Font links -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Georama:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="page">
+          <!-- Heading Group-->
+          <h1>Global Terrorism since 1970</h1>
+          <h2 style="font-size: 25px; text-align: center;">Between 1970 and 2019</h2>
+          
+          <!-- Introductory Paragraph -->
+          <div class="pure-g">
+            <div class="pure-u-1-5"></div>
+            <div class="pure-u-3-5">
+              <p>Global Terrorism trended upwards significantly in recent decades; In 1970 there were 65 fatal attacks worldwide, but in 2019 there were 4474. Although, 
+                only roughly half of the attacks over this period were fatal, the fatal attacks claimed more than 140,000 lives. These attacks occur across the globe
+                 in different situations and have been attributed to more than 2000 name perpetrators. Thus, this visualization will look into trends in the large variety 
+                 of fatal terrorist attacks over the period 1970-2019.</p>
+              <p style="text-align: center;">Data sourced from <a href="url">https://www.start.umd.edu/gtd/</a></p>
+            </div>
+            <div class="pure-u-1-5"></div>
+          </div>
+          
+          <!-- Map paragraph and image -->
+          <div class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="description description-left">
+                <h2 style="font-size: 30px; 
+              font-family: 'Georama', sans-serif;">The Increase in Terrorism and its Regionality</h2>
+              <p>	Both time-series charts below show the clear increase in terrorist attacks, and conequently fatalities due to terrorist attacks, over the timeframe. However,
+                there is variance in the prevalance of each attack type over the period, with no discernible pattern.
+                Though terrorism is a global issue it is certainly concentrated in some regions more than others. The choropleth map suggests that India, 
+                and nearby countries, Central America, and the Middle Eastern regions have the greatest incidence of fatal terrorist attacks. The distribution of the circles representing
+                significant terrorist attacks too suggests that some regions have a greater terrorism threat than others.</p>
+              <p style="color: grey;">Description: The layered map has a choropleth map showing the number of fatal terrorist attacks for each country over the entire 
+                1970-2019 period. While the circles on top show the location of terrorist attacks that had more than 100 fatalities, with the size of the 
+                circle representing the number of fatalities. The Line chart can be used to filter the attacks shown by year, and it also filters the area 
+                chart too. The legend on the area chart can be used to filter circles shown on the map by <span class='variable-text'>type of attack</span>.</p>
+              </div>
+            </div>
+            <div class="pure-u-1-2">
+              <img src="2013.4.16_수도방위사령부_독거미부대_대테러훈련_Counter_Terrorism_Training_of_Republic_of_Korea_Army_Capital_Defense_Command_(8655915637).jpg">
+            </div>
+          </div>
+
+          <!-- Map Group-->
+        <div class="pure-g">
+          <div class="pure-u-1-1">
+            <div id="map_group" class = "map-container"></div>
+          </div>
+        </div>
+
+        <!-- HeatMap Group-->
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div class="description description-left">
+              <h2 style="font-size: 30px;">The Outlier Countries and Target Type</h2>
+              <p>	The regionality of terrorist threats becomes even more apparent when the top 30 countries with the most terrorist attacks are isolated. 
+                The majority of the countries are from the Middle East, Central America, the Indian Subcontinent or Africa. The most 
+                notable exceptions being the United Kingdom and Spain, the only countries from Eastern Europe, and even then they have comparatively 
+                few attacks when comparing against the top 10 countries. We can also show the most prevalent <span class="variable-text">attack targets</span>, by comparing them against the 
+                top 30 countries. It appears that Military, Government, Police and Private Citizens/Property are most often the target of terror 
+                attacks</p>
+              <p style="color: grey;">Description: The heatmap shows the general trend in <span class="variable-text">target type</span> across the top 30 countries with the greatest fatal terrorist attacks, 
+                and a tooltip is available for specific details. The bar chart above shares the same country axis, and plots the total number of 
+                attacks for the respective countries over the period 1970-2019</p>
+            </div>
+          </div>
+          <div class="pure-u-1-2">
+            <div id="heat_map" class="heat-map-container"></div>
+          </div>
+        </div>
+
+        <!-- Scatterplot Group-->
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div id="scatterplot" class="scatter-container"></div>
+          </div>
+          <div class="pure-u-1-2">
+            <div class="description description-right">
+              <h2 style="font-size: 30px;">Most Fatal Attacks, by Attack and Weapon Type</h2>
+              <p>Having looked at the prevalence of <span class="variable-text">attack types</span> for all fatal attacks, we can also look at the distribution of <span class="variable-text">attack types </span> in 
+                substantial terrorist attacks (>25 fatalities and wounded). The most prevalent <span class="variable-text">attack types </span> in these substantial attacks are 
+                Bombings and Assaults, where other types have comparatively little prevalence. Furthermore, in filtering by the 
+                weapon type used in the attack we can view the relationships between <span class="variable-text">weapons used </span> and <span class="variable-text">attack types </span>. Interestingly Explosives were by far 
+                the most common category of weapon used in attacks, followed by Firearms. </p>
+              <p style="color: grey;">Description: The chart can be filtered by <span class="variable-text">weapon type</span> by using the drop down menu, and filtered by <span class="variable-text">attack type</span> by clicking on 
+                categories in the legend. Furthermore, you can zoom and pan the chart to investigate the more dense clusters of dots in detail.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- The Sankey Plot group-->
+        <div class="pure-g">
+          <div class="pure-u-1-2">
+            <div class="description description-left">
+              <h2 style="font-size: 30px;">The Relationship between Attack and Target Type</h2>
+              <p>We can also analyze fatal terrorist attacks by their <span class="variable-text">attack type - target type</span> relationship, to determine if there is any trends 
+                for particular combinations. The diagram only shows the significant relationships and reiterates that Assault and Bombings are the most common <span class="variable-text">attack types</span>, and shows that Private Citizens/Property is
+                the most common <span class="variable-text">target type</span> of all. Consequently, it is unsurprising that the most common relationship is Bombings/Explosions targeting Private 
+                Citizens/Property.</p>
+              <p style="color: grey;">Description: The Sankey chart shows all <span class="variable-text">attack type - target type</span> relationships that are significant; connected together in more than 1000 fatal terrorist attacks (between 
+                1970-2019). The tooltip can display the exact number of connections (and the proportion of total connections) for each node and link. Additionally, by clicking
+              on a node yo ucan view only the links in/out of that node.</p>
+            </div>
+          </div>
+          <div class="pure-u-1-2">
+            <div id="sankey" class="sankey-container"></div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pure-g">
+          <div class="pure-u-1-3">
+            <p style="font-size: 16px; color: grey;">Created by William Carpenter, for FIT3179 Data Visualisation 2</p>
+          </div>
+        </div>
+
+
+        <script type="text/javascript">
+            var specMap = "js/map.vg.json"
+            var specHeat = "js/heatmap.vg.json"
+            var specScatter = "js/scatterplot.vg.json"
+            var specSankey = "sankey/sankey_2.vg.json"
+
+            //embed map
+            vegaEmbed('#map_group', specMap).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+            //embed heat map
+            vegaEmbed('#heat_map', specHeat).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+            //embed scatterplot
+            vegaEmbed('#scatterplot', specScatter).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+
+            //embed heat map
+            vegaEmbed('#sankey', specSankey).then(function(result) {
+            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+            }).catch(console.error);
+        </script>
+    </body>
+</html>
