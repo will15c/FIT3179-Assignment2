@@ -1,0 +1,130 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "background": "#e4e7eb",
+    "hconcat": [
+        {   "width": 800,
+            "height": 450,
+            "projection": {"type": "equalEarth"},
+            "layer": [
+                {
+                    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/earth_map.json", "format": {"type": "topojson", "feature": "earth_map"}},
+                    "transform": [{"calculate": "'No Data on significant terrorist attacks in ' + datum.properties.name", "as": "Note"}],
+                    "mark": {"type": "geoshape", "fill": "lightgrey", "stroke": "white", "strokeWidth": 1},
+                    "encoding": {"tooltip": [{"field": "Note"}]}
+                },
+                {
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/choro_data.csv"
+                    },
+                    "transform": [
+                        {
+                            "lookup": "Country", 
+                            "from": {
+                                "data": {
+                                    "url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/earth_map.json",
+                                    "format": {"type": "topojson", "feature": "earth_map"}
+                                    },
+                                    "key": "properties.name"
+                                },
+                            "as": "geo"
+                        }
+                    ],
+                    "mark": {"type": "geoshape", "stroke": "#fff", "strokeWidth": 0.5},
+                    "encoding": {
+                        "shape": {"field": "geo", "type": "geojson"},
+                        "color": {
+                                "field": "Count",
+                                "type": "quantitative",
+                                "scale": {"scheme": "reds"},
+                                "legend": {"orient": "none", "legendX": 10, "legendY": 158, "title": "Total Attacks"}
+                            },
+                            "tooltip": [
+                                {"field": "Country", "type": "nominal"},
+                                {"field": "Count", "type": "quantitative"}
+                            ]
+                        }
+                },
+                {
+                    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset_no_date.csv"},
+                    "title": "Signficant (>100 Fatalities) Terrorist Attacks over Selected Period",
+                    "transform": [{"filter": "datum.Fatalities > 100"}, {"filter": {"param": "time_brush"}}],
+                    "mark": "circle",
+                    "encoding": {
+                        "longitude": {"field": "longitude", "type": "quantitative"},
+                        "latitude": {"field": "latitude", "type": "quantitative"},
+                        "size": {
+                            "field": "Fatalities",
+                            "type": "quantitative",
+                            "legend": {"orient": "none", "legendX": 10, "legendY": 10}
+                        },
+                        "color": {"value": "#005fdf"},
+                        "opacity" : {
+                            "condition": {"param": "Attack Type", "value": 0.8},
+                            "value": 0.15
+                        },
+                        "tooltip": [
+                            {"field": "Country", "type": "nominal"},
+                            {"field": "Year", "type": "quantitative"},
+                            {"field": "Month", "type": "quantitative"},
+                            {"field": "Day", "type": "quantitative"},
+                            {"field": "Attack_Type", "title": "Attack Type"},
+                            {"field": "Target_Type", "title": "Target Type"},
+                            {"field": "Fatalities", "type": "quantitative", "format": ","},
+                            {"field": "Wounded", "type": "quantitative", "format": ","}
+                            ]
+                    }
+                }
+            ]
+        },
+        {
+        "vconcat": [
+            {
+            "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset_no_date.csv"},
+            "width": 500,
+            "height": 100,
+            "title": "Fatal Terrorist Attacks Each Year: Filter events by Year using this chart",
+            "mark": "line",
+            "params": [{
+                "name": "time_brush",
+                "select": {"type": "interval", "encodings": ["x"]}
+            }],
+            "transform": [{"filter": "datum.Fatalities > 0"}],
+            "encoding": {
+                "x": {"field": "Year", "type": "quantitative", "axis": {"domain": [1970,2019], "format": "", "grid": false}},
+                "y": {"aggregate": "count", "title": "Total Attacks", "axis": {"grid": false}},
+                "color": {"value": "#e31804"},
+                "tooltip": [{"field": "Year"}, {"field": "Year", "aggregate": "count", "title": "Total Fatal Attacks"}]
+            }  
+        },
+        {
+            "width": 500, 
+            "height": 200,
+            "title": "Fatalities due to Terrorist Attacks Each Year",
+            "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset_no_date.csv"},
+            "transform": [{"filter": "datum.Fatalities > 0"}],
+            "params": [
+                        {"name": "Attack Type", "select": {"type": "point", "fields": ["Attack_Type"], "resolve": "global"}, "bind": "legend"}
+                    ],
+            "mark": "area",
+            "encoding": {
+                "x": {"field": "Year", "type": "quantitative", "scale": {"domain": {"param": "time_brush"}}, "axis": {"domain": [1970,2019], "format": "", "grid": false}},
+                "y": {"field": "Fatalities", "type": "quantitative", "aggregate": "sum", "axis": {"title": "Total Attacks", "grid": false}},
+                "color": {
+                    "field": "Attack_Type",
+                    "type": "nominal",
+                    "legend": {"orient": "none", "legendX": 0, "legendY": 410, "direction": "horizontal", "title": "Attack Type"},
+                    "scale": {"scheme": "dark2"}
+                },
+                "opacity" : {
+                    "condition": {"param": "Attack Type", "value": 1},
+                    "value": 0.25
+                },
+                "tooltip": [{"field": "Attack_Type", "title": "Attack Type"},
+                    {"field": "Year"}, {"field": "Fatalities", "aggregate": "sum", "title": "Fatalities"}]
+            }
+        }
+        ]}
+    ],
+    "config": {"font": "Georama"}
+}

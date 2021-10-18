@@ -1,0 +1,38 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "background": "#e4e7eb",
+    "padding": null,
+    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset_no_date.csv"},
+    "transform": [{"filter": "datum.Country == 'Iraq' || datum.Country == 'Afghanistan' || datum.Country == 'Pakistan' || datum.Country == 'India' || datum.Country == 'Nigeria' || datum.Country == 'Colombia' || datum.Country == 'Somalia' || datum.Country == 'Philippines' || datum.Country == 'Yemen' || datum.Country == 'Sri Lanka' || datum.Country == 'Peru' || datum.Country == 'Turkey' || datum.Country == 'United Kingdom' || datum.Country == 'Algeria' || datum.Country == 'Russia' || datum.Country == 'Guatemala' || datum.Country == 'Egypt' || datum.Country == 'El Salvador' || datum.Country == 'Thailand' || datum.Country == 'Syria' || datum.Country == 'Libya' || datum.Country == 'South Africa' || datum.Country == 'Lebanon' || datum.Country == 'Nicaragua' || datum.Country == 'Spain' || datum.Country == 'Israel' || datum.Country == 'Mali' || datum.Country == 'Sudan' || datum.Country == 'Bangladesh'"}, 
+        {"filter": "datum.Target_Type != 'Infrastructure'"},
+        {"filter": "datum.Fatalities > 0"}
+    ],
+    "params": [{"name": "brush", "select": {"type": "point", "fields": ["Country"], "on": "mousemove", "nearest": false, "resolve": "global"}}],
+    "vconcat": [
+        {   
+            "title": "Total Attacks and Attacks by Target Type for Top 30 C",
+            "height": 110,
+            "mark": "bar",
+            "encoding": {
+                "x": {"field": "Country", "type": "nominal", "axis": null},
+                "y": {"aggregate": "count", "axis": {"title": "Total Attacks", "grid": false}},
+                "opacity": {"condition": {"param": "brush", "value": 1}, "value": 0.5},
+                "tooltip": [{"field": "Country"},{"aggregate": "count", "title": "Total Attacks"}],
+                "color": {"value": "#e31804"}
+            }
+        },
+        {
+            "height": 225,
+            "mark": "rect",
+            "encoding": {
+                "x": {"field": "Country", "type": "nominal"},
+                "y": {"field": "Target_Type", "type": "nominal", "axis": {"title": "Target Type"}},
+                "color": {"aggregate": "count", "legend": null, "scale": {"scheme": "yelloworangered"}},
+                "opacity": {"condition": {"param": "brush", "value": 1}, "value": 0.5},
+                "tooltip": [{"field": "Country"},{"field": "Target_Type", "title": "Target Type"},{"aggregate": "count", "title": "Number of Attacks"}]
+            }   
+        }
+    ],
+    "config": {"font": "Georama"}
+}

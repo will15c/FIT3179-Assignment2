@@ -1,0 +1,63 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 640, 
+    "height": 350,
+    "background": "#e4e7eb",
+    "title": "Fatalities vs. Wounded",
+    "data": {"url": "https://raw.githubusercontent.com/will15c/FIT3179-Assignment2/main/data/terrorism_dataset_no_date.csv"},
+    "params":[{
+            "name": "Weapon_selection",
+            "bind":{
+                "input": "select",
+                "options": [null, "Explosives", "Firearms", "Incendiary", "Chemical", "Melee", "Sabotage Equipment", "Other"],
+                "labels": ["Show All", "Explosives", "Firearms", "Incendiary", "Chemical", "Melee", "Sabotage Equipment", "Other"],
+                "name": "Weapon Selection "
+            }
+        },{"name": "grid", "select": "interval", "bind": "scales"},
+        {"name": "Attack Type", "select": {"type": "point", "fields": ["Attack_Type"]}, "bind": "legend"}
+    ],
+    "transform": [{"filter": "datum.Fatalities >= 25"}, {"filter": "datum.Wounded >=25"}, {"filter": "Weapon_selection == null || datum.Weapon_Type == Weapon_selection"}],
+    "encoding": {
+        "x": {
+            "field": "Wounded", 
+            "type": "quantitative",
+            "axis": {"tickCount": 3, "grid": false},
+            "scale": {"type": "log", "domain": [10,15000]}
+        },
+        "y": {
+            "field": "Fatalities", 
+            "type": "quantitative",
+            "axis": {"tickCount": 2, "grid": false},
+            "scale": {"type": "log", "domain": [10,1500]}
+        }
+    },
+    "layer": [
+        {
+        "mark": "circle",
+        "encoding": {
+            "color": {
+                "field": "Attack_Type",
+                "type": "nominal",
+                "legend": {"title": "Attack Type", "orient": "bottom"},
+                "scale": {"scheme": "dark2"}
+            },
+            "opacity": {
+                "condition": {"param": "Attack Type", "value": 0.85},
+                "value": 0.15
+            },
+            "tooltip": [
+                {"field": "Country", "type": "nominal"},
+                {"field": "Year", "type": "quantitative"},
+                {"field": "Month", "type": "quantitative"},
+                {"field": "Day", "type": "quantitative"},
+                {"field": "Fatalities", "type": "quantitative", "format": ","},
+                {"field": "Wounded", "type": "quantitative", "format": ","},
+                {"field": "Attack_Type", "title": "Attack Type"},
+                {"field": "Weapon_Type", "title": "Weapon Type"}
+                ]
+        }
+    }],
+    "config": {
+        "font": "Georama"
+    }
+}
