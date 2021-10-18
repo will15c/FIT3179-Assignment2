@@ -1,0 +1,72 @@
+body{
+    background-color: grey;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: 'Georama', sans-serif;
+}
+h1{
+    text-align: center;
+    font-size: 50px;
+}
+p{
+    font-size: 23px;
+    color: #5e5e5e;
+    font-family: 'Georama', sans-serif;
+}
+img{
+    height: 450px;
+    width: 600px;
+    padding-left: 120px;
+    padding-top: 80px;
+    opacity: 0.65;
+}
+.page{
+    width: 1500px;
+    background-color: lightgrey;
+    margin: auto;
+    padding-left: 20px;
+    padding-right: 50px;
+    padding-top: 35px;
+}
+.map-container{
+    width: 1500px;
+    padding-left: 30px;
+    padding-top: 10px;
+}
+.description h2, h1{
+    margin-top: 0px;
+    font-family: 'Georama', sans-serif;
+}
+.description-right{
+    padding-left: 20px;
+    height: 500px;
+    font-family: 'Georama', sans-serif;
+}
+.description-left{
+    padding-right: 20px;
+    padding-left: 10px;
+    height: 500px;    
+    font-family: 'Georama', sans-serif;
+}
+.pure-g{
+    padding-bottom: 25px;
+}
+.sankey-container{
+    padding-left: 50px;
+    padding-top: 10px;
+    background-color: #e4e7eb;
+    height: 500px;
+}
+.scatter-container{
+    background-color: #e4e7eb;
+    height: 500px;
+    padding-left: 10px;
+}
+.heat-map-container{
+    height: 500px;
+    padding-top: 5px;
+    background-color: #e4e7eb;
+}
+.variable-text{
+    font-style: italic;
+}
